@@ -1,3 +1,8 @@
-15:48:42
+brownie compile -> compile contracts
+brownie run scripts/deploy.py -> deploy contracts
 
-brownie run scripts/deploy.py
+-----------------TECH STACK-----------------------
+
+Smart Contracts -> Solidity, Brownie (Python), OpenZeppelin
+
+Front end -> @usedapp and React
