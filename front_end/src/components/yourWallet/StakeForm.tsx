@@ -37,9 +37,10 @@ export const StakeForm = ({token} : StakeFormProps) => {
         return approveAndStake(amoutAsWei.toString())
     }
 
-    const isMining = approveAndStakeErc20State.status === "Mining"
     const [showErc20ApprovalSuccess, setShowErc20ApprovalSuccess] = useState(false)
     const [showStakeTokenSuccess, setShowStakeTokenSucess] = useState(false)
+    const [showTransferTokenSuccess, setShowTransferTokenSuccess] = useState(false)
+    const [showUnstakeTokenSuccess, setShowUnstakeTokenSuccess] = useState(false)
 
     useEffect(() => {
         if (notifications.filter(
@@ -49,6 +50,7 @@ export const StakeForm = ({token} : StakeFormProps) => {
             {
                 setShowErc20ApprovalSuccess(true)
                 setShowStakeTokenSucess(false)
+                setShowUnstakeTokenSuccess(false)
             }
         if (notifications.filter(
             (notification) => 
@@ -58,20 +60,42 @@ export const StakeForm = ({token} : StakeFormProps) => {
                 setShowErc20ApprovalSuccess(false)
                 setShowStakeTokenSucess(true)
             }
-        }, [notifications, showErc20ApprovalSuccess, setShowStakeTokenSucess])
+        if (notifications.filter(
+            (notification) => 
+            notification.type === "transactionSucceed" &&
+            notification.transactionName === "Approve ERC20 transfer tokens to").length > 0)
+            {
+                setShowErc20ApprovalSuccess(false)
+                setShowTransferTokenSuccess(true)
+            }
+        if (notifications.filter(
+            (notification) => 
+            notification.type === "transactionSucceed" &&
+            notification.transactionName === "Unstake Tokens").length > 0)
+            {   
+                setShowErc20ApprovalSuccess(false)
+                setShowUnstakeTokenSuccess(true)
+            }
+        }, [notifications, showErc20ApprovalSuccess, setShowStakeTokenSucess,setShowUnstakeTokenSuccess,setShowTransferTokenSuccess])
 
     
     const handleCloseSnack = () => {
         setShowErc20ApprovalSuccess(false)
         setShowStakeTokenSucess(false)
+        setShowTransferTokenSuccess(false)
+        setShowUnstakeTokenSuccess(false)
     }
-    const [showUnstakeTokenSuccess, setShowUnstakeTokenSuccess] = useState(false)
     const {approveAndUnStake, state: approveAndUnstakeErc20State} = useUnstakeTokens(tokenAddress)
     //const 
     const {approveAndTransfer, state: approveAndTransferErc20State} = useTransferTokens(tokenAddress)
     const handleUnstakeSubmit = () => {
         return approveAndUnStake(tokenAddress)
     }
+
+    const isMining = approveAndStakeErc20State.status === "Mining" ||
+                     approveAndUnstakeErc20State.status === "Mining" ||
+                     approveAndTransferErc20State.status === "Mining"
+
 
     const handleTransferSubmit = () =>{
         const amoutAsWei = utils.parseEther(amountTransfer.toString())
@@ -90,8 +114,9 @@ export const StakeForm = ({token} : StakeFormProps) => {
         const newAmount = event.target.value === "" ? "" : Number(event.target.value)
         setAmountTransfer(newAmount)
     }
-    //useTransferTokens = (tokenAddress: string, 
-    //senderAddress: string,receiverAddress: string, amount: number)
+    
+
+
     return (
         <>  
         <div>
@@ -144,6 +169,22 @@ export const StakeForm = ({token} : StakeFormProps) => {
             onClose={handleCloseSnack}>
             <Alert onClose={handleCloseSnack} severity="success">
                 Tokens Staked!   
+            </Alert>
+        </Snackbar>  
+        <Snackbar 
+            open={showTransferTokenSuccess}
+            autoHideDuration={5000}
+            onClose={handleCloseSnack}>
+            <Alert onClose={handleCloseSnack} severity="success">
+                Tokens Transfered !  
+            </Alert>
+        </Snackbar>  
+        <Snackbar 
+            open={showUnstakeTokenSuccess}
+            autoHideDuration={5000}
+            onClose={handleCloseSnack}>
+            <Alert onClose={handleCloseSnack} severity="success">
+                Tokens Unstaked ! 
             </Alert>
         </Snackbar>  
         </>

@@ -27,7 +27,7 @@ export const useTransferTokens = (tokenAddress: string) => {
 
     const {send: approveErc20Send, state: approveAndTransferErc20State} = 
     useContractFunction(erc20Contract, "transfer", 
-        {transactionName: "Approve ERC20 transfer",
+        {transactionName: "Approve ERC20 transfer tokens to",
         })
 
     
