@@ -15,3 +15,7 @@ To get faucets for kovan test network try this links:
 
 -> https://gitter.im/kovan-testnet/faucet
 -> https://faucets.chain.link/
+-> https://erc20faucet.com/ (ERC-20 token)
+-> https://app.mycrypto.com/faucet
+-> https://kovan.balancer.fi/ (Trade tokens)
+-> https://ethdrop.dev/
