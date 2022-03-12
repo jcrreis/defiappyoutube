@@ -5,4 +5,4 @@ brownie run scripts/deploy.py -> deploy contracts
 
 Smart Contracts -> Solidity, Brownie (Python), OpenZeppelin
 
-Front end -> @usedapp and React
+Front end -> useDApp and React
